@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package payment;
+
+// Define the request and response messages
+message CreatePaymentRequest {
+  string orderId = 1;
+  string method = 2;
+  float amount = 3;
+  string userId = 4;
+}
+
+message UpdatePaymentRequest {
+  int32 id = 1;
+  string method = 2;
+  float amount = 3;
+}
+
+message PaymentIdRequest {
+  int32 id = 1;
+}
+
+message UserIdRequest {
+  string userId = 1;
+}
+
+message Payment {
+  int32 id = 1;
+  string orderId = 2;
+  string method = 3;
+  float amount = 4;
+  string userId = 5;
+  string status = 6;
+}
+
+enum PaymentMethod {
+  CREDIT_CARD = 0;
+  PAYPAL = 1;
+  BANK_TRANSFER = 2;
+}
+
+// Define the service
+service PaymentService {
+  rpc CreatePayment(CreatePaymentRequest) returns (Payment);
+  rpc GetUserPayments(UserIdRequest) returns (stream Payment);
+  rpc FindAll(google.protobuf.Empty) returns (stream Payment);
+  rpc FindOne(PaymentIdRequest) returns (Payment);
+  rpc UpdatePayment(UpdatePaymentRequest) returns (Payment);
+  rpc RemovePayment(PaymentIdRequest) returns (Payment);
+}

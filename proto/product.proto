@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+package product;
+
+// Import Google's protobuf types for any standard types you might use
+import "google/protobuf/empty.proto";
+
+// Define the request and response messages
+message CreateProductRequest {
+  string name = 1;
+  string description = 2;
+  float price = 3;
+  string shopId = 4;
+}
+
+message UpdateProductRequest {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  float price = 4;
+}
+
+message ProductIdRequest {
+  string id = 1;
+}
+
+message ProductFilter {
+  string category = 1;
+  float minPrice = 2;
+  float maxPrice = 3;
+}
+
+message Product {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  float price = 4;
+  string shopId = 5;
+}
+
+message PaginatedProduct {
+  repeated Product products = 1;
+  int32 totalCount = 2;
+}
+
+// Define the service
+service ProductService {
+  rpc CreateProduct(CreateProductRequest) returns (Product);
+  rpc UpdateProduct(UpdateProductRequest) returns (Product);
+  rpc PublishProduct(ProductIdRequest) returns (Product);
+  rpc GetProducts(ProductFilter) returns (PaginatedProduct);
+  rpc GetProduct(ProductIdRequest) returns (Product);
+}

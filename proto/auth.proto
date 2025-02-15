@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package auth;
+
+// Define the service
+service AuthService {
+  rpc Login(LoginRequest) returns (AuthToken);
+  rpc Register(RegisterRequest) returns (AuthToken);
+  rpc RefreshToken(RefreshTokenRequest) returns (AuthToken);
+  rpc Logout(LogoutRequest) returns (google.protobuf.BoolValue);
+  rpc Me(UserIdRequest) returns (User);
+}
+
+// Define the request and response messages
+message LoginRequest {
+  string username = 1;
+  string password = 2;
+  string refreshToken = 3;
+}
+
+message AuthToken {
+  string accessToken = 1;
+  string refreshToken = 2;
+}
+
+message RegisterRequest {
+  string username = 1;
+  string password = 2;
+  string email = 3;
+}
+
+message RefreshTokenRequest {
+  string userId = 1;
+}
+
+message LogoutRequest {
+  string userId = 1;
+}
+
+message User {
+  string id = 1;
+  string username = 2;
+  string email = 3;
+}
+
+message UserIdRequest {
+  string userId = 1;
+}
+

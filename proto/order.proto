@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package order;
+
+// Define the request and response messages
+message CreateOrderRequest {
+  string userId = 1;
+}
+
+message OrderIdRequest {
+  string orderId = 1;
+}
+
+message UserIdRequest {
+  string userId = 1;
+}
+
+message UpdateOrderStatusRequest {
+  string orderId = 1;
+  OrderStatus status = 2;
+}
+
+message UpdateOrderRequest {
+  string id = 1;
+  string status = 2;
+  string items = 3; // Add other fields as necessary
+}
+
+message RemoveOrderRequest {
+  int32 id = 1;
+}
+
+message Order {
+  string id = 1;
+  string userId = 2;
+  string status = 3;
+  string items = 4; // Add other fields as necessary
+}
+
+enum OrderStatus {
+  PENDING = 0;
+  COMPLETED = 1;
+  CANCELED = 2;
+}
+
+// Define the service
+service OrderService {
+  rpc CreateOrder(CreateOrderRequest) returns (Order);
+  rpc GetUserOrders(UserIdRequest) returns (stream Order);
+  rpc GetOrderDetails(OrderIdRequest) returns (Order);
+  rpc UpdateOrderStatus(UpdateOrderStatusRequest) returns (Order);
+  rpc UpdateOrder(UpdateOrderRequest) returns (Order);
+  rpc RemoveOrder(RemoveOrderRequest) returns (Order);
+}
